@@ -40,12 +40,13 @@ caracteristicasCasa(ravenclaw,responsable).
 caracteristicasCasa(hufflepuff,amistoso).
 
 %permiteEntrar(Casa,Mago).
-permiteEntrar(Casa,Mago):-
+permiteEntrar(Casa,Mago):- % no le pongo _ pq solo quiero que entren magos
     casa(Casa),
-    mago(Mago).
+    mago(Mago), 
+    Casa \= slytherin.
 
 permiteEntrar(slytherin,Mago):-
-    mago(Mago),
+    mago(Mago), %le agrego mago pq abajo estoy usando un not. puedo no ponerlo y hacer sangre(Mago,Sangre),Sangre \= impura.
     not(sangre(Mago,impura)).
 
 cumpleCaracteristicasCasa(Casa,Mago):-
