@@ -50,14 +50,14 @@ permiteEntrar(slytherin,Mago):-
     not(sangre(Mago,impura)).
 
 cumpleCaracteristicasCasa(Casa,Mago):-
-    casa(Casa),
+    casa(Casa), % ligo la casa y el mago para el forall
     mago(Mago),
     forall(caracteristicasCasa(Casa,Caracteristica),caracteristicas(Mago,Caracteristica)).%todas las requisitos de la casa son cumplidos.
 
 puedeEntrar(Casa,Mago):-
     mago(Mago),
-    not(casaOdiada(Mago,Casa)),
     permiteEntrar(Casa,Mago),
+    not(casaOdiada(Mago,Casa)), %no lo pongo antes pq sino anda, pero solo me devuelve a hermione.los demas los tenia q probar 1x1.
     cumpleCaracteristicasCasa(Casa,Mago).
 
 puedeEntrar(gryffindor,hermione).%pq lo hackeo.
@@ -70,9 +70,15 @@ cadenaDeAmistades(Mago):-
     OtroMago \= Mago,
     cadenaDeAmistades(OtroMago).
 
-accion(tercerPiso,-75).
-accion(seccionRestringidaBiblioteca,-10).
-accion(bosque,-50).
+%lugar(Lugar,PuntosQueSaca).
+lugar(mazmorras,0).
+lugar(bosque,-50).
+lugar(seccionRestringidaBiblioteca,-10).
+lugar(tercerPiso,-75).
+
+accion(irA(Lugar),Puntos):-
+    lugar(Lugar,Puntos).
+
 accion(fueraDeLaCama,-50).
 accion(ganarAjedrezMagico,50).
 accion(salvarAmigos,50).
@@ -93,29 +99,30 @@ puntosPregunta(Pregunta,Puntos):-
 pregunta(dondeEstaUnBezoar,20,snape).
 pregunta(comoLevantarVarita,25,flitwick).
 
+queHizo(harry,fueraDeLaCama).
+queHizo(harry,irA(bosque)).
+queHizo(harry,irA(tercerPiso)).
+queHizo(harry,ganarleAVoldemort).
+queHizo(hermione,irA(tercerPiso)). 
+queHizo(hermione,irA(seccionRestringidaBiblioteca)).
+queHizo(hermione,salvarAmigos).
+queHizo(hermione,responderPregunta(dondeEstaUnBezoar)).
+queHizo(hermione,responderPregunta(comoLevantarVarita)).
+queHizo(draco,irA(mazmorras)).
+queHizo(ron,ganarAjedrezMagico).
+
 esDe(hermione,gryffindor).
 esDe(ron,gryffindor).
 esDe(harry,gryffindor).
 esDe(draco,slytherin).
 esDe(luna,ravenclaw).
 
-queHizo(harry,fueraDeLaCama).
-queHizo(harry,bosque).
-queHizo(harry,tercerPiso).
-queHizo(harry,ganarleAVoldemort).
-queHizo(hermione,tercerPiso).
-queHizo(hermione,seccionRestringidaBiblioteca).
-queHizo(hermione,salvarAmigos).
-queHizo(draco,mazmorras).
-queHizo(ron,ganarAjedrezMagico).
-
 esBuenAlumno(Mago):-
-    mago(Mago),
-    queHizo(Mago,_),
+    queHizo(Mago,_), %no pongo mago(Mago), porque aca ya lo estoy ligando.
     forall(queHizo(Mago,Accion),(accion(Accion,Puntos),Puntos >=0)).
 
 esRecurrente(Accion):-
-    accion(Accion,_),
+    accion(Accion,_),%ligo la accion.
     findall(Accion,queHizo(_,Accion),ListaDeAccion),
     length(ListaDeAccion, CantDeVecesQueSeRealizo),
     CantDeVecesQueSeRealizo > 1.
@@ -132,6 +139,5 @@ tomoPuntosPorAccion(Mago,Puntos):-
     accion(Accion,Puntos).
 
 casaGanadora(Casa):-
-    casa(Casa),
-    puntajeCasa(Casa,Puntaje),
+    puntajeCasa(Casa,Puntaje), %no pongo casa(Casa) pq la ligo en puntaje casa.
     forall((puntajeCasa(OtraCasa,OtroPuntaje),OtraCasa \= Casa), Puntaje > OtroPuntaje).
