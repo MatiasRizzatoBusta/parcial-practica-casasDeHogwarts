@@ -45,6 +45,7 @@ permiteEntrar(Casa,Mago):-
     mago(Mago).
 
 permiteEntrar(slytherin,Mago):-
+    mago(Mago),
     not(sangre(Mago,impura)).
 
 cumpleCaracteristicasCasa(Casa,Mago):-
