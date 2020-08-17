@@ -101,7 +101,7 @@ puntosAccion(responderPregunta(Pregunta,Profesor),PuntosPregunta):-
     Profesor \= snape,
     puntosPregunta(Pregunta,PuntosPregunta).
 
-puntosPregunta(responderPregunta(Pregunta,snape),PuntosPregunta):-
+puntosAccion(responderPregunta(Pregunta,snape),PuntosPregunta):-
     puntosPregunta(Pregunta,Puntos),
     PuntosPregunta is (Puntos / 2).
 
@@ -174,4 +174,3 @@ casaGanadora(Casa):-
     casa(Casa),
     puntosCasa(Casa,PuntosCasa),
     forall((casa(OtraCasa),OtraCasa \= Casa),(puntosCasa(OtraCasa,OtrosPuntos), PuntosCasa > OtrosPuntos)).
-
