@@ -93,7 +93,6 @@ puntosAccion(tenerCoraje,70).
 puntosAccion(ayudarHarry,20).
 puntosAccion(explicarHechizos,40).
 
-
 puntosAccion(irA(Lugar),PuntosLugar):-
     lugar(Lugar,PuntosLugar).
 
